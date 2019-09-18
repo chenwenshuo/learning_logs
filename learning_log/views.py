@@ -38,8 +38,10 @@ def new_entry(request, topic_id):
     else:
         form = EntryForm(request.POST)
         if form.is_valid():
-            form.save(commit=False)
-            return HttpResponseRedirect(reverse('learning_logs:topic',
+            new_entry = form.save(commit=False)
+            new_entry.topic =topic
+            new_entry.save()
+            return HttpResponseRedirect(reverse('learning_log:topic',
                                                 args=[topic_id]))
     context = {'topic': topic, 'form': form}
-    return render(request, 'learning_logs/new_entry.html', context)
+    return render(request, 'learning_log/new_entry.html', context)
